@@ -11,9 +11,9 @@ import os
 from pathlib import Path
 
 def generate_launch_description():
-    neo_mpo_500 = get_package_share_directory('neo_mpo_500')
+    neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
 
-    urdf = os.path.join(get_package_share_directory('neo_mpo_500'), 'robot_model/mpo_500', 'mpo_500.urdf')
+    urdf = os.path.join(get_package_share_directory('neo_mpo_500-2'), 'robot_model/mpo_500', 'mpo_500.urdf')
 
     with open(urdf, 'r') as infp:  
         robot_desc = infp.read() # Dummy to use parameter instead of using argument=[urdf] in Node. Reference page: https://github.com/ros2/demos/pull/426/commits/a35a25732159e4c8b5655755ce31ec4c3e6e7975
