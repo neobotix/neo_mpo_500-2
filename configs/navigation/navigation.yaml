@@ -1,6 +1,6 @@
 amcl:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     alpha1: 0.05
     alpha2: 0.05
     alpha3: 0.05
@@ -13,7 +13,7 @@ amcl:
     do_beamskip: false
     global_frame_id: "map"
     lambda_short: 0.1
-    set_initial_pose: true
+    set_initial_pose: false
     laser_likelihood_max_dist: 2.0
     laser_max_range: -1.0
     laser_min_range: -1.0
@@ -22,12 +22,12 @@ amcl:
     max_particles: 1250
     min_particles: 500
     odom_frame_id: "odom"
-    pf_err: 0.01
-    pf_z: 0.99
+    pf_err: 0.05
+    pf_z: 0.01
     recovery_alpha_fast: 0.0
     recovery_alpha_slow: 0.0
     resample_interval: 2
-    robot_model_type: "omni-directional"
+    robot_model_type: "omnidirectional"
     save_pose_rate: 0.5
     sigma_hit: 0.2
     tf_broadcast: true
@@ -38,7 +38,14 @@ amcl:
     # z_hit: 0.5
     # z_max: 0.05
     # z_rand: 0.5
-    # z_short: 0.05
+
+amcl_map_client:
+  ros__parameters:
+    use_sim_time: False
+
+amcl_rclcpp_node:
+  ros__parameters:
+    use_sim_time: False
 
 bt_navigator:
   ros__parameters:
@@ -84,8 +91,8 @@ controller_server:
     controller_plugins: ["FollowPath"]
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 0.25
-      yaw_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.1
+      yaw_goal_tolerance: 0.1
       stateful: True
     # DWB controller parameters
     FollowPath:
@@ -97,7 +104,7 @@ controller_server:
       acc_lim_y : 0.25
 
       # The rotational acceleration limit of the robot in radians/sec^2
-      acc_lim_theta : 0.8
+      acc_lim_theta : 1.0
 
       # The maximum x velocity for the robot in m/s.
       max_vel_x : 0.6
@@ -105,10 +112,10 @@ controller_server:
       # The minimum x velocity for the robot in m/s, negative for backwards motion.
       min_vel_x : -0.2
 
-      # The maximum x velocity for the robot in m/s.
+      # The maximum y velocity for the robot in m/s
       max_vel_y : 0.5
 
-      # The minimum x velocity for the robot in m/s, negative for backwards motion.
+      # The minimum y velocity for the robot in m/s
       min_vel_y : -0.5
 
       # The absolute value of the maximum rotational velocity for the robot in rad/s
@@ -130,7 +137,7 @@ controller_server:
       xy_goal_tolerance : 0.01
 
       # How long to fine tune for goal position after reaching tolerance limits [s]
-      goal_tune_time : 3.0
+      goal_tune_time : 2.0
 
       # How far to predict control pose into the future based on latest odometry [s]
       lookahead_time : 0.4
@@ -144,11 +151,8 @@ controller_server:
       # Gain when adjusting final x position for goal [1/s]
       pos_x_gain : 1.0
 
-      # Gain for lane keeping based on y error (differential only) [rad/s^2]
-      pos_y_yaw_gain : 1.0
-
-      # Gain for lane keeping based on yaw error (differential only) [1/s]
-      yaw_gain : 3.0
+       # Gain when adjusting y position (holonomic only) [1/s]
+      pos_y_gain : 1.0
 
       # Gain for adjusting yaw when not translating, or in case of holonomic drive  [1/s]
       static_yaw_gain : 3.0
@@ -158,9 +162,6 @@ controller_server:
 
       # Gain for y cost avoidance (holonomic only)
       cost_y_gain : 0.2
-
-      # Gain for y cost avoidance (differential only)
-      cost_y_yaw_gain : 0.3
 
       # How far ahead to compute y cost gradient (constant offset) [m]
       cost_y_lookahead_dist : 0.0
@@ -192,7 +193,9 @@ controller_server:
       # If robot has differential drive, holonomic otherwise
       differential_drive : false
 
-
+controller_server_rclcpp_node:
+  ros__parameters:
+    use_sim_time: False
 
 local_costmap:
   local_costmap:
@@ -205,38 +208,14 @@ local_costmap:
       footprint:  "[ [0.50,0.4],[-0.50,0.4],[-0.50,-0.4],[0.50,-0.4] ]"
       use_sim_time: True
       rolling_window: true
-      width: 3
-      height: 3
-      resolution: 0.05
+      width: 5
+      height: 5
+      resolution: 0.02
       plugins: ["voxel_layer", "inflation_layer", "obstacle_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 5.0
-        inflation_radius: 1.0
-      obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
-        observation_sources: scan scan1
-        scan:
-          topic: /lidar_1/scan_filtered
-          max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
-        scan1:
-          topic: /lidar_2/scan_filtered
-          max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
-          clearing: True
-          marking: True
-          data_type: "LaserScan"
+        inflation_radius: 1.0        
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -259,15 +238,37 @@ local_costmap:
           clearing: True
           marking: True
           data_type: "LaserScan"
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan scan1
+        scan:
+          topic: /lidar_1/scan_filtered
+          obstacle_max_range: 5.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 8.0
+          raytrace_min_range: 0.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+        scan1:
+          topic: /lidar_2/scan_filtered
+          obstacle_max_range: 5.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 8.0
+          raytrace_min_range: 0.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
       static_layer:
         map_subscribe_transient_local: False
       always_send_full_costmap: True
   local_costmap_client:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
   local_costmap_rclcpp_node:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
 
 global_costmap:
   global_costmap:
@@ -318,6 +319,9 @@ global_costmap:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
         publish_voxel_map: True
+        z_resolution: 0.05
+        z_voxels: 10
+        max_obstacle_height: 2.0
         observation_sources: scan scan1
         scan:
           topic: /lidar_1/scan_filtered
