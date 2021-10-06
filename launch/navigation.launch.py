@@ -23,7 +23,7 @@ def generate_launch_description():
         default=os.path.join(
             get_package_share_directory('neo_mpo_500-2'),
             'configs/navigation/maps',
-            'test.yaml'))
+            'test1.yaml'))
 
     param_file_name = 'navigation.yaml'
     param_dir = LaunchConfiguration(

@@ -11,9 +11,11 @@ neo_relayboard_node:
         ################################################
         #            device configuration              #
         ################################################
-        port: /dev/ttyUSB0
-        request_rate: 50
+        port: /dev/neo-relayboard
+        request_rate: 50.0
         motor_delay: 0.015
+        Publish_joint_states: true
+        trajectory_timeout: 1.0
 
         #################################################
         #                 battery                       #
@@ -131,3 +133,63 @@ neo_relayboard_node:
             DecIncrS2: 1000000.0
             Modulo: 1000000.0
             joint_name: wheel_back_right_joint
+        
+        drive6:
+          motor_active: false
+          homing_active: false
+          EncIncrPerRevMot: 4096
+          VelMeasFrqHz: 1.0
+          GearRatio: 25.0
+          BeltRatio: 1.0
+          Sign: 1
+          VelMaxEncIncrS: 300000.0
+          VelPModeEncIncrS: 10.0
+          AccIncrS2: 500000.0
+          DecIncrS2: 500000.0
+          Modulo: 1000000.0
+          joint_name: deactivated
+
+        drive7:
+          motor_active: false
+          homing_active: false
+          EncIncrPerRevMot: 4096
+          VelMeasFrqHz: 1.0
+          GearRatio: 25.0
+          BeltRatio: 1.0
+          Sign: -1
+          VelMaxEncIncrS: 300000.0
+          VelPModeEncIncrS: 10.0
+          AccIncrS2: 500000.0
+          DecIncrS2: 500000.0
+          Modulo: 1000000.0
+          joint_name: deactivated
+
+        drive8:
+          motor_active: false
+          homing_active: false
+          EncIncrPerRevMot: 4096
+          VelMeasFrqHz: 1.0
+          GearRatio: 25.0
+          BeltRatio: 1.0
+          Sign: 1
+          VelMaxEncIncrS: 300000.0
+          VelPModeEncIncrS: 10.0
+          AccIncrS2: 500000.0
+          DecIncrS2: 500000.0
+          Modulo: 1000000.0
+          joint_name: deactivated 
+
+        drive9:
+          motor_active: false
+          homing_active: false
+          EncIncrPerRevMot: 4096
+          VelMeasFrqHz: 1.0
+          GearRatio: 25.0
+          BeltRatio: 1.0
+          Sign: -1
+          VelMaxEncIncrS: 300000.0
+          VelPModeEncIncrS: 10.0
+          AccIncrS2: 500000.0
+          DecIncrS2: 500000.0
+          Modulo: 1000000.0
+          joint_name: deactivated
