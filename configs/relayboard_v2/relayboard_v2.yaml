@@ -16,6 +16,7 @@ neo_relayboard_node:
         motor_delay: 0.015
         Publish_joint_states: true
         trajectory_timeout: 1.0
+        number_of_drives: 4
 
         #################################################
         #                 battery                       #
@@ -32,7 +33,7 @@ neo_relayboard_node:
         battery:
             serial_number: neobattery1
             location: slot1
-            design_capacity: 100
+            design_capacity: 100.0
             chemistry: 1
 
 
