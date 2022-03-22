@@ -16,7 +16,7 @@ def generate_launch_description():
     robot_namespace = LaunchConfiguration('robot_namespace', default='')
     context = LaunchContext()
 
-    urdf = os.path.join(get_package_share_directory('neo_mpo_500-2'), 'robot_model/mpo_500', 'mpo_500.urdf')
+    urdf = os.path.join(get_package_share_directory('neo_mpo_500-2'), 'robot_model', 'mpo_500.urdf')
 
     with open(urdf, 'r') as infp:  
         robot_desc = infp.read()
