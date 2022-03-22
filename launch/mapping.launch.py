@@ -1,4 +1,4 @@
-# Copyright 2019 Open Source Robotics Foundation, Inc.
+# Copyright 2022, Neobotix GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author: Darby Lim
+# Author: Pradheep Padmanabhan
 
 import os
 
@@ -32,7 +32,7 @@ def generate_launch_description():
     param_dir = LaunchConfiguration(
         'parameters',
         default=os.path.join(
-            get_package_share_directory('neo_mpo_500-2'),
+            get_package_share_directory('neo_mpo_700-2'),
             'configs/navigation/',
             param_file_name))
 

@@ -1,4 +1,4 @@
-neo_localization:
+neo_localization2_node:
   ros__parameters:
     base_frame: "base_footprint"
     odom_frame: "odom"
@@ -49,7 +49,7 @@ neo_localization:
     # solver update gain, lower gain = more stability / slower convergence
     solver_gain: 0.1
     # solver update damping, higher damping = more stability / slower convergence
-    solver_damping: 1000
+    solver_damping: 1000.0
     # number of gauss-newton iterations per sample per scan
     solver_iterations: 20
     # maximum wait for getting transforms [s]
