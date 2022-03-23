@@ -1,4 +1,4 @@
-neo_mecanum_node:
+/**:
   ros__parameters:
     #robot's geometric parameters:
     #Diameter of std. mecanum wheel
