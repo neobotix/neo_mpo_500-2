@@ -13,7 +13,7 @@ from launch.launch_context import LaunchContext
 
 def generate_launch_description():
     neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
-    robot_namespace = LaunchConfiguration('robot_namespace', default='')
+    robot_namespace = LaunchConfiguration('robot_namespace', default='/')
     context = LaunchContext()
 
     urdf = os.path.join(get_package_share_directory('neo_mpo_500-2'), 'robot_model', 'mpo_500.urdf')
@@ -27,8 +27,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         output='screen',
         namespace=robot_namespace,
-        parameters=[{'robot_description': robot_desc, 'frame_prefix': robot_namespace}],
-        arguments=[urdf])
+        parameters=[{'robot_description': robot_desc, 'frame_prefix': robot_namespace}])
     
     # Launch can be set just once, does not matter if you set it for other launch files. 
     # The arguments should certainly have different meaning if there is a bigger launch file
@@ -78,4 +77,4 @@ def generate_launch_description():
             output='screen',
             parameters=[{'input_topic': robot_namespace.perform(context) + "lidar_2/scan_filtered",'output_topic': robot_namespace.perform(context) + "scan"}])
 
-    return LaunchDescription([relayboard, start_robot_state_publisher_cmd, laser, kinematics, teleop, relay_topic_lidar1, relay_topic_lidar2])
+    return LaunchDescription([start_robot_state_publisher_cmd])
