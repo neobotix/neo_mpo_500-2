@@ -281,6 +281,9 @@ controller_server:
       # If robot has differential drive, holonomic otherwise
       differential_drive : false
 
+      # Enable or disable reversing
+      allow_reversing: false
+
 controller_server_rclcpp_node:
   ros__parameters:
     use_sim_time: False
