@@ -32,7 +32,7 @@ def generate_launch_description():
     param_dir = LaunchConfiguration(
         'parameters',
         default=os.path.join(
-            get_package_share_directory('neo_mpo_700-2'),
+            get_package_share_directory('neo_mpo_500-2'),
             'configs/navigation/',
             param_file_name))
 
