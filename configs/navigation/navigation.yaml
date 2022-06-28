@@ -183,7 +183,7 @@ bt_navigator_rclcpp_node:
 controller_server:
   ros__parameters:
     # controller server parameters (see Controller Server for more info)
-    use_sim_time: True
+    use_sim_time: False
     controller_frequency: 100.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
@@ -281,42 +281,34 @@ local_costmap:
       publish_frequency: 1.0
       global_frame: odom
       robot_base_frame: base_link
-      footprint_padding: 0.0
+      footprint_padding: 0.
       footprint:  "[ [0.50,0.4],[-0.50,0.4],[-0.50,-0.4],[0.50,-0.4] ]"
-      use_sim_time: True
+      use_sim_time: False
       rolling_window: true
       width: 5
       height: 5
-      resolution: 0.02
-      plugins: ["inflation_layer", "obstacle_layer"]
+      resolution: 0.03
+      plugins: ["obstacle_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 5.0
-        inflation_radius: 1.0        
+        cost_scaling_factor: 4.0
+        inflation_radius: 1.0
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
         observation_sources: scan scan1
         scan:
           topic: /lidar_1/scan_filtered
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
+          max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
         scan1:
           topic: /lidar_2/scan_filtered
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
+          max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
-      static_layer:
-        map_subscribe_transient_local: False
       always_send_full_costmap: True
 
 global_costmap:
@@ -328,7 +320,7 @@ global_costmap:
       robot_base_frame: base_link
       footprint_padding: 0.0
       footprint:  "[ [0.50,0.4],[-0.50,0.4],[-0.50,-0.4],[0.50,-0.4] ]"
-      use_sim_time: True
+      use_sim_time: False
       resolution: 0.05
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
@@ -339,20 +331,12 @@ global_costmap:
         scan:
           topic: /lidar_1/scan_filtered
           max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
           clearing: True
           marking: True
           data_type: "LaserScan"
         scan1:
           topic: /lidar_2/scan_filtered
           max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          raytrace_max_range: 8.0
-          raytrace_min_range: 0.0
           clearing: True
           marking: True
           data_type: "LaserScan"
@@ -367,12 +351,12 @@ global_costmap:
 
 map_server:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     yaml_filename: "test.yaml"
 
 map_saver:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     save_map_timeout: 5000
     free_thresh_default: 0.25
     occupied_thresh_default: 0.65
@@ -381,7 +365,7 @@ map_saver:
 planner_server:
   ros__parameters:
     expected_planner_frequency: 5.0
-    use_sim_time: True
+    use_sim_time: False
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
@@ -404,7 +388,7 @@ behavior_server:
     global_frame: odom
     robot_base_frame: base_link
     transform_timeout: 0.1
-    use_sim_time: true
+    use_sim_time: False
     simulate_ahead_time: 2.0
     max_rotational_vel: 0.5
     min_rotational_vel: 0.3
@@ -412,7 +396,7 @@ behavior_server:
 
 robot_state_publisher:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 waypoint_follower:
   ros__parameters:
