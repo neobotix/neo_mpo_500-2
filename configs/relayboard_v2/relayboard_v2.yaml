@@ -11,7 +11,7 @@
         ################################################
         #            device configuration              #
         ################################################
-        port: /dev/neo-relayboard
+        port: /dev/ttyUSB0
         request_rate: 50.0
         motor_delay: 0.015
         Publish_joint_states: true

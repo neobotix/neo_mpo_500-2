@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    port: /dev/neo-s300-2
+    port: /dev/ttyUSB2
     baud: 500000
     scan_cycle_time: 0.040
     scan_duration: 0.025
