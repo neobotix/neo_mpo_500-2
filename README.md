@@ -8,12 +8,14 @@ The [MPO-500](http://www.neobotix-robots.com/mecanum-robot-mpo-500.html) is an o
 
 # Documentation
 
-Coming soon..! 
+ROS Documentation can be [found here](https://neobotix-docs.de/ros/).
+
+Hardware documentation for this robot can be [found here](https://neobotix-docs.de/hardware/en/).
 
 # Contact information
 
 For more information please visit our website at www.neobotix-robots.com. 
 If you have any questions, just get in touch with us:
 * General information: http://www.neobotix-robots.com/company-contact.html
-* ROS-2 related questions: ros@neobotix.de
+* ROS 2 related questions: ros@neobotix.de
 
