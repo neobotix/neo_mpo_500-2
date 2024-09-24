@@ -26,6 +26,11 @@
   <!-- Dependencies for Phidget IMU -->
   <exec_depend>phidgets_drivers</exec_depend>
 
+  <!-- Dependencies for Realsense camera -->
+  <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>realsense2_camera_msgs</exec_depend>
+  <exec_depend>realsense2_description</exec_depend>
+
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
