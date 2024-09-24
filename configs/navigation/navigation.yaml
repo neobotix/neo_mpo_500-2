@@ -202,7 +202,7 @@ controller_server:
       stateful: True
     # neo_local_planner controller parameters
     FollowPath:
-      plugin: "neo_local_planner::NeoLocalPlanner"
+      plugin: "neo_local_planner2::NeoLocalPlanner"
       # The x acceleration limit of the robot in meters/sec^2
       acc_lim_x : 0.25
       # The y acceleration limit of the robot in meters/sec^2
