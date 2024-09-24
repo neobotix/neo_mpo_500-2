@@ -23,7 +23,7 @@
 
   <link name="base_link"/>
 
-  <joint name="base_footprint_joint" type="${meca_joint_type}">
+  <joint name="base_footprint_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 0 -1"/>
     <joint_properties damping="1" friction="1"/>
@@ -40,13 +40,13 @@
     <visual>
       <origin rpy="-1.571 0 1.571" xyz="0. 0. 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="-1.571 0 1.571" xyz="0. 0. 0.0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -70,13 +70,13 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -100,13 +100,13 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -130,13 +130,13 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -160,13 +160,13 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/MPO-500-WHEEL.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -187,13 +187,13 @@
     <visual>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -214,13 +214,13 @@
     <visual>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="-1.57 0 3.14" xyz="0 0 -0.12"/>
       <geometry>
-        <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO_500/SICK-S300.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://neo_mpo_500-2/robot_model/mpo_500/meshes/SICK-S300.dae" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
