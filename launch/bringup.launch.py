@@ -1,5 +1,6 @@
 # Neobotix GmbH
 # Author: Pradheep Padmanabhan
+# Contributor: Adarsh Karan K P
 
 import launch
 import xacro
@@ -11,7 +12,6 @@ from launch import LaunchDescription
 from launch.actions import (
   DeclareLaunchArgument,
   IncludeLaunchDescription,
-  ExecuteProcess,
   OpaqueFunction
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -19,21 +19,37 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 
 from launch.launch_context import LaunchContext
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 
 def execution_stage(context: LaunchContext,
+                    robot_namespace,
                     imu_enable,
                     d435_enable,
-                    arm_type):
+                    scanner_type,
+                    arm_type,
+                    gripper_type,
+                    mock_arm,
+                    initial_joint_controller,
+                    robot_ip):
     
-    arm_typ = str(arm_type.perform(context))
+    neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
+
     imu_enabl = str(imu_enable.perform(context))
     d435_enabl = str(d435_enable.perform(context))
+    scanner_typ = str(scanner_type.perform(context))
+    arm_typ = str(arm_type.perform(context))
+    gripper_typ = str(gripper_type.perform(context))
+    use_mock = str(mock_arm.perform(context))
 
     launches = []
 
+    rp_ns = ""
+    if (robot_namespace.perform(context) != "/"):
+        rp_ns = robot_namespace.perform(context) + "/"
+
+
     # Setting up the URDF
-    urdf = os.path.join(get_package_share_directory('neo_mpo_500-2'),
+    urdf = os.path.join(neo_mpo_500,
         'robot_model/mpo_500',
         'mpo_500.urdf.xacro')
     
@@ -45,41 +61,61 @@ def execution_stage(context: LaunchContext,
         output='screen',
         parameters=[{
             'robot_description': Command([
-            "xacro", " ", urdf, " ", 'arm_type:=',
-            arm_typ,
-            " ", 'use_imu:=',
-            imu_enabl,
-            " ", 'use_d435:=',
-            d435_enabl
-            ])}],
-		arguments=[urdf])
+                "xacro", " ", urdf,
+                " ", 'arm_type:=', arm_typ,
+                " ", 'use_imu:=', imu_enabl,
+                " ", 'use_d435:=', d435_enabl,
+                " ", 'scanner_type:=', scanner_typ,
+                " ", 'gripper_type:=', gripper_typ,
+                " ", 'use_mock_hardware:=', use_mock,  # experimental
+            ]),
+            'frame_prefix': rp_ns
+        }],
+        arguments=[urdf]
+    )
 
     launches.append(start_robot_state_publisher_cmd)
 
-    # 5. IMU
-    imu = IncludeLaunchDescription(
+    # 4. Laser
+    scanner_model = scanner_typ.split('_')[1] if '_' in scanner_typ else scanner_typ
+    laser = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory('neo_mpo_500-2'),
-                    'configs/phidget_imu',
-                    'imu_launch.py')
+                os.path.join(neo_mpo_500, f'configs/lidar/{scanner_model}', f'{scanner_typ}.launch.py')
             ),
-            condition=IfCondition(imu_enable)
+            launch_arguments={
+                'namespace': robot_namespace
+            }.items(),
+            condition=UnlessCondition(mock_arm)
         )
     
-    launches.append(imu)
+    launches.append(laser)
+
+    # 5. IMU
+    if imu_enable.lower == 'true':
+        imu = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(neo_mpo_500,
+                        'configs/phidget_imu',
+                        'imu_launch.py')
+                ),
+                condition=UnlessCondition(mock_arm)
+            )
+        
+        launches.append(imu)
 
     # 6. D435
     # TODO: Add support for namespacing
-    d435 = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(get_package_share_directory('neo_mpo_500-2'),
-                    'configs/realsense',
-                    'rs_launch.py')
-            ),
-            condition=IfCondition(d435_enable)
-        )
+    if d435_enable.lower == 'true':
+        d435 = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(neo_mpo_500,
+                        'configs/realsense',
+                        'rs_launch.py')
+                ),
+                condition=IfCondition(mock_arm)
+            )
 
-    launches.append(d435)
+        launches.append(d435)
 
     # 7. Arm - Bringing up drivers for Universal Arm
     # TODO: Add support for Elite Robots
@@ -91,34 +127,69 @@ def execution_stage(context: LaunchContext,
         
         ur_arm = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(get_package_share_directory('neo_mpo_500-2'),
+                    os.path.join(neo_mpo_500,
                         'configs/ur',
                         'ur_control.launch.py')
                 ),
                 launch_arguments={
                     'ur_type': arm_typ,
-                    'robot_ip': "192.168.1.102",
+                    'robot_ip': robot_ip,
                     'tf_prefix': arm_typ,
+                    'use_mock_hardware': use_mock,
+                    'mock_sensor_commands': use_mock,
+                    'initial_joint_controller': initial_joint_controller
                 }.items()
             )
 
         launches.append(ur_arm)
+
+        # For 2f_140
+        # TODO: Mock gripper support
+        if (gripper_typ == "2f_140"):
+
+            gripper_2f_140 = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(neo_mpo_500,
+                            'configs/robotiq',
+                            'robotiq_control.launch.py')
+                    )
+                )
+
+            launches.append(gripper_2f_140)
+
+        # For Epick
+        elif (gripper_typ == "epick"):
+            gripper_epick = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(neo_mpo_500,
+                            'configs/robotiq',
+                            'robotiq_epick_control.launch.py')
+                    )
+                )
+
+            launches.append(gripper_epick)
 
     # Relaying lidar data to /scan topic
     relay_topic_lidar1 = Node(
             package='topic_tools',
             executable = 'relay',
             name='relay',
+			namespace =  robot_namespace,
             output='screen',
-            parameters=[{'input_topic': "lidar_1/scan_filtered",'output_topic': "scan"}])
+            parameters=[{'input_topic': robot_namespace.perform(context) + "lidar_1/scan_filtered",'output_topic': robot_namespace.perform(context) + "scan"}],
+            condition=UnlessCondition(mock_arm)
+            )
 
     relay_topic_lidar2 = Node(
             package='topic_tools',
             executable = 'relay',
             name='relay',
+			namespace =  robot_namespace,
             output='screen',
-            parameters=[{'input_topic': "lidar_2/scan_filtered",'output_topic': "scan"}])
-
+            parameters=[{'input_topic': robot_namespace.perform(context) + "lidar_2/scan_filtered",'output_topic': robot_namespace.perform(context) + "scan"}],
+            condition=UnlessCondition(mock_arm)
+            )
+    
     launches.append(relay_topic_lidar1)
     launches.append(relay_topic_lidar2)
 
@@ -128,13 +199,23 @@ def generate_launch_description():
     neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
 
     # Launch configurations
-    # TODO: Add support for namespacing
+    robot_namespace = LaunchConfiguration('robot_namespace')
     imu_enable = LaunchConfiguration('imu_enable')
     realsense_enable = LaunchConfiguration('d435_enable')
+    scanner_type = LaunchConfiguration('scanner_type')
     arm_type = LaunchConfiguration('arm_type')
+    gripper_type = LaunchConfiguration('gripper_type')
+    mock_arm = LaunchConfiguration('use_mock_arm')
+    initial_joint_controller = LaunchConfiguration('initial_joint_controller')
+    robot_ip = LaunchConfiguration('robot_ip')
 
-    context_arguments = [imu_enable, realsense_enable, arm_type]
+    context_arguments = [robot_namespace, imu_enable, realsense_enable, scanner_type, arm_type, gripper_type, mock_arm, initial_joint_controller, robot_ip]
 
+    # Declare the launch arguments
+    declare_namespace_cmd = DeclareLaunchArgument(
+            'robot_namespace', default_value='', description='Top-level namespace'
+        )
+    
     declare_imu_cmd = DeclareLaunchArgument(
             'imu_enable', default_value='False',
             description='Enable IMU - Options: True/False'
@@ -145,9 +226,41 @@ def generate_launch_description():
             description='Enable Realsense - Options: True/False'
         )
     
+    declare_scanner_type_cmd = DeclareLaunchArgument(
+            'scanner_type', default_value='sick_s300',
+            choices=['', 'sick_s300', 'sick_microscan3'],
+            description='Type of laser scanner to use'
+        )
+    
     declare_arm_cmd = DeclareLaunchArgument(
             'arm_type', default_value='',
             description='Arm used in the robot - currently only support universal'
+        )
+    
+    declare_robotiq_cmd = DeclareLaunchArgument(
+            'gripper_type', default_value='',
+            choices=['', '2f_140', 'epick'],
+            description="Enables gripper and it's controllers"
+        )
+
+    declare_mock_arm_cmd = DeclareLaunchArgument(
+            'use_mock_arm', default_value='False',
+            description="Mock arm and gripper (if available)"
+        )
+    
+    declare_initial_joint_controller_cmd = DeclareLaunchArgument(
+            'initial_joint_controller',
+            default_value='scaled_joint_trajectory_controller',
+            choices=[
+                'scaled_joint_trajectory_controller',
+                'joint_trajectory_controller',
+            ],
+            description='Initially loaded robot controller.'
+        )
+
+    declare_robot_ip_cmd = DeclareLaunchArgument(
+            'robot_ip', default_value='192.168.1.102',
+            description='IP address of the robot.'
         )
     
     #  Launch hardware nodes
@@ -155,42 +268,49 @@ def generate_launch_description():
     relayboard = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(neo_mpo_500, 'configs/relayboard_v2', 'relayboard_v2.launch.py')
-            )
+            ),
+            launch_arguments={
+                'namespace': robot_namespace
+            }.items(),
+            condition=UnlessCondition(mock_arm)
         )
-
     # 2. Kinematics
     kinematics = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(neo_mpo_500, 'configs/kinematics', 'kinematics.launch.py')
-            )
+            ),
+            launch_arguments={
+                'namespace': robot_namespace
+            }.items(),
+            condition=UnlessCondition(mock_arm)
         )
-
     # 3. Teleop
     teleop = IncludeLaunchDescription(
              PythonLaunchDescriptionSource(
                  os.path.join(neo_mpo_500, 'configs/teleop', 'teleop.launch.py')
-            )
+            ),
+            launch_arguments={
+                'namespace': robot_namespace
+            }.items(),
+            condition=UnlessCondition(mock_arm)
         )
 
-    # 4. Laser
-    # TODO: Add support for MicroScan3
-    laser = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(neo_mpo_500, 'configs/lidar/sick/s300', 'sick_s300.launch.py')
-            )
-        )
-    
     # Opaque function for configuring URDF, IMU, Realsense and the Arm
     opq_function = OpaqueFunction(function=execution_stage, args=context_arguments)
 
     ld = LaunchDescription()
+    ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_imu_cmd)
     ld.add_action(declare_realsense_cmd)
+    ld.add_action(declare_scanner_type_cmd)
     ld.add_action(declare_arm_cmd)
+    ld.add_action(declare_robotiq_cmd)
+    ld.add_action(declare_mock_arm_cmd)
+    ld.add_action(declare_initial_joint_controller_cmd)
+    ld.add_action(declare_robot_ip_cmd)
     ld.add_action(relayboard)
     ld.add_action(kinematics)
     ld.add_action(teleop)
     ld.add_action(opq_function)
-    ld.add_action(laser)
 
     return ld
