@@ -24,7 +24,7 @@ def execution_stage(
         autostart, namespace, use_multi_robots,
         head_robot, use_amcl, map_dir, param_dir, use_rviz):
     
-    launches = []
+    launch_actions = []
 
     params = str(param_dir.perform(context))
 
@@ -92,15 +92,15 @@ def execution_stage(
             name='lifecycle_manager_localization',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
-						{'autostart': autostart},
+                        {'autostart': autostart},
                         {'node_names': ['map_server']}])
         ]
     )
 
-    launches.append(start_navigation)
-    launches.append(start_map_server)
+    launch_actions.append(start_navigation)
+    launch_actions.append(start_map_server)
 
-    return launches
+    return launch_actions
 
 def generate_launch_description():
     launch_desc = LaunchDescription()
