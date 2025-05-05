@@ -101,6 +101,8 @@ def execution_stage(context: LaunchContext,
             condition=UnlessCondition(mock_arm)
         )
 
+    launch_actions.append(relayboard)
+
     # 2. Kinematics
     kinematics = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -112,6 +114,8 @@ def execution_stage(context: LaunchContext,
             condition=UnlessCondition(mock_arm)
         )
 
+    launch_actions.append(kinematics)
+
     # 3. Teleop
     teleop = IncludeLaunchDescription(
              PythonLaunchDescriptionSource(
@@ -122,6 +126,8 @@ def execution_stage(context: LaunchContext,
             }.items(),
             condition=UnlessCondition(mock_arm)
         )
+
+    launch_actions.append(teleop)
 
     # 4. Laser
     scanner_model = scanner_typ.split('_')[1] if '_' in scanner_typ else scanner_typ
