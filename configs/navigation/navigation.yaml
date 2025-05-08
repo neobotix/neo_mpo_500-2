@@ -116,10 +116,6 @@ amcl_map_client:
   ros__parameters:
     use_sim_time: False
 
-amcl_rclcpp_node:
-  ros__parameters:
-    use_sim_time: False
-
 bt_navigator:
   ros__parameters:
     use_sim_time: False
