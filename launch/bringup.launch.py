@@ -24,7 +24,6 @@ from launch.conditions import IfCondition, UnlessCondition
 def execution_stage(context: LaunchContext,
                     robot_namespace,
                     imu_enable,
-                    d435_enable,
                     scanner_type,
                     arm_type,
                     gripper_type,
@@ -35,7 +34,6 @@ def execution_stage(context: LaunchContext,
     neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
 
     imu_enabl = str(imu_enable.perform(context))
-    d435_enabl = str(d435_enable.perform(context))
     scanner_typ = str(scanner_type.perform(context))
     arm_typ = str(arm_type.perform(context))
     gripper_typ = str(gripper_type.perform(context))
@@ -61,7 +59,6 @@ def execution_stage(context: LaunchContext,
         " ", 'use_mock_hardware:=', use_mock,  # experimental
         " ", 'use_mock_sensor_commands:=', use_mock,
         " ", 'use_imu:=', imu_enabl,
-        " ", 'use_d435:=', d435_enabl,
         " ", 'scanner_type:=', scanner_typ,
     ]
 
@@ -158,22 +155,7 @@ def execution_stage(context: LaunchContext,
 
         launch_actions.append(imu)
 
-
-    # 6. D435
-    # TODO: Add support for namespacing
-    if d435_enabl.lower == 'true':
-        d435 = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(neo_mpo_500,
-                        'configs/realsense',
-                        'rs_launch.py')
-                ),
-                condition=IfCondition(mock_arm)
-            )
-
-        launch_actions.append(d435)
-
-    # 7. Arm - Bringing up drivers for Universal Arm
+    # 6. Arm - Bringing up drivers for Universal Arm
     # TODO: Add support for Elite Robots
     # TODO: Add support for namespacing
     if (arm_typ == "ur5" or
@@ -281,11 +263,6 @@ def generate_launch_description():
             description='Enable IMU - Options: True/False'
         )
 
-    declare_realsense_cmd = DeclareLaunchArgument(
-            'd435_enable', default_value='False',
-            description='Enable Realsense - Options: True/False'
-        )
-
     declare_scanner_type_cmd = DeclareLaunchArgument(
             'scanner_type', default_value='sick_s300',
             choices=['', 'sick_s300', 'sick_microscan3'],
@@ -323,13 +300,11 @@ def generate_launch_description():
             description='YAML file with the arm controllers configuration.',
         )
 
-    # Opaque function for configuring URDF, IMU, Realsense and the Arm
     opq_function = OpaqueFunction(
     function=execution_stage, 
     args=[
         LaunchConfiguration('robot_namespace'),
         LaunchConfiguration('imu_enable'),
-        LaunchConfiguration('d435_enable'),
         LaunchConfiguration('scanner_type'),
         LaunchConfiguration('arm_type'),
         LaunchConfiguration('gripper_type'),
@@ -341,7 +316,6 @@ def generate_launch_description():
     ld = LaunchDescription([
         declare_namespace_cmd,
         declare_imu_cmd,
-        declare_realsense_cmd,
         declare_scanner_type_cmd,
         declare_arm_type_cmd,
         declare_robotiq_cmd,
