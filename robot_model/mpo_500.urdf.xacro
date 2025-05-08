@@ -12,7 +12,7 @@ Contributor: Adarsh Karan K P
   <xacro:arg name="use_d435" default="false"/>
   <xacro:arg name="scanner_type" default="sick_s300"/>
 
-  <!-- Arm Arguments-->
+  <!-- Manipulator Arguments-->
   <xacro:arg name="arm_type" default=""/>
   <xacro:arg name="arm_parent" default="cabinet_link"/>
   <xacro:arg name="gripper_type" default=""/>
