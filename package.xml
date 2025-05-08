@@ -27,11 +27,6 @@
   <!-- Dependencies for Phidget IMU -->
   <exec_depend>phidgets_drivers</exec_depend>
 
-  <!-- Dependencies for Realsense camera -->
-  <exec_depend>realsense2_camera</exec_depend>
-  <exec_depend>realsense2_camera_msgs</exec_depend>
-  <exec_depend>realsense2_description</exec_depend>
-
   <!-- Dependencies for xacro -->
   <exec_depend>xacro</exec_depend>
 
