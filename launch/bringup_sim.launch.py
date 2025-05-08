@@ -19,7 +19,6 @@ def execution_stage(context: LaunchContext,
                     world,
                     arm_type,
                     imu_enable,
-                    d435_enable,
                     scanner_type,
                     gripper_type):    
 
@@ -39,7 +38,6 @@ def execution_stage(context: LaunchContext,
             'world': world_name,
             'arm_type': arm_type,
             'imu_enable': imu_enable,
-            'd435_enable': d435_enable,
             'scanner_type': scanner_type,
             'gripper_type': gripper_type
         }.items(),
@@ -74,11 +72,6 @@ def generate_launch_description():
             description='Enable IMU - Options: True/False'
         )
 
-    declare_realsense_cmd = DeclareLaunchArgument(
-            'd435_enable', default_value='False',
-            description='Enable Intel RealSense D435 camera if true'
-        )
-
     declare_scanner_type_cmd = DeclareLaunchArgument(
             'scanner_type', default_value='sick_s300',
             choices=['', 'sick_s300', 'sick_microscan3'],
@@ -98,7 +91,6 @@ def generate_launch_description():
             LaunchConfiguration('world'),
             LaunchConfiguration('arm_type'),
             LaunchConfiguration('imu_enable'),
-            LaunchConfiguration('d435_enable'),
             LaunchConfiguration('scanner_type'),
             LaunchConfiguration('gripper_type'),
         ])
@@ -108,7 +100,6 @@ def generate_launch_description():
         declare_world_name_arg,
         declare_arm_type_cmd,
         declare_imu_cmd,
-        declare_realsense_cmd,
         declare_scanner_type_cmd,
         declare_gripper_type_cmd,
         opq_function
