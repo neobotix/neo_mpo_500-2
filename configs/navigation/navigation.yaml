@@ -112,10 +112,6 @@ amcl:
     # z_max: 0.05
     # z_rand: 0.5
 
-amcl_map_client:
-  ros__parameters:
-    use_sim_time: False
-
 bt_navigator:
   ros__parameters:
     use_sim_time: False
