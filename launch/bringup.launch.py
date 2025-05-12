@@ -19,7 +19,7 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 from launch.launch_context import LaunchContext
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import UnlessCondition
 
 def execution_stage(context: LaunchContext,
                     robot_namespace,
@@ -136,7 +136,7 @@ def execution_stage(context: LaunchContext,
             }.items(),
             condition=UnlessCondition(mock_arm)
         )
-    
+
     launch_actions.append(laser)
 
     # 5. IMU
@@ -162,7 +162,7 @@ def execution_stage(context: LaunchContext,
         arm_typ == "ur10" or
         arm_typ == "ur5e" or
         arm_typ == "ur10e"):
-        
+
         initial_joint_controller = "scaled_joint_trajectory_controller"
         if use_mock:
             initial_joint_controller = "joint_trajectory_controller"
@@ -230,7 +230,7 @@ def execution_stage(context: LaunchContext,
             package='topic_tools',
             executable = 'relay',
             name='relay',
-			namespace =  robot_namespace,
+            namespace =  robot_namespace,
             output='screen',
             parameters=[{'input_topic': robot_namespace.perform(context) + "lidar_1/scan_filtered",'output_topic': robot_namespace.perform(context) + "scan"}],
             condition=UnlessCondition(mock_arm)
@@ -240,12 +240,12 @@ def execution_stage(context: LaunchContext,
             package='topic_tools',
             executable = 'relay',
             name='relay',
-			namespace =  robot_namespace,
+            namespace =  robot_namespace,
             output='screen',
             parameters=[{'input_topic': robot_namespace.perform(context) + "lidar_2/scan_filtered",'output_topic': robot_namespace.perform(context) + "scan"}],
             condition=UnlessCondition(mock_arm)
             )
-    
+
     launch_actions.append(relay_topic_lidar1)
     launch_actions.append(relay_topic_lidar2)
 
@@ -272,7 +272,7 @@ def generate_launch_description():
     declare_arm_type_cmd = DeclareLaunchArgument(
             'arm_type', default_value='',
             choices=['', 'ur5', 'ur10', 'ur5e', 'ur10e', 'ec66', 'cs66'],
-            description='Arm Types\n\t'        
+            description='Arm Types\n\t'
         )
 
     declare_robotiq_cmd = DeclareLaunchArgument(
