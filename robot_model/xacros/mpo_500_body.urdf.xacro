@@ -48,7 +48,7 @@ Contributor: Adarsh Karan K P
 
     <!-- Omni Wheels-->
     <xacro:mpo_500_omni_wheel 
-      wheel_prefix="mpo_500_wheel_front_left"
+      wheel_prefix="wheel_front_left"
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
@@ -56,7 +56,7 @@ Contributor: Adarsh Karan K P
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel 
-      wheel_prefix="mpo_500_wheel_front_right" 
+      wheel_prefix="wheel_front_right" 
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
@@ -64,7 +64,7 @@ Contributor: Adarsh Karan K P
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel 
-      wheel_prefix="mpo_500_wheel_back_left" 
+      wheel_prefix="wheel_back_left" 
       parent_link="base_footprint"
       wheel_joint_type="${meca_joint_type}"
       >
@@ -72,7 +72,7 @@ Contributor: Adarsh Karan K P
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel
-      wheel_prefix="mpo_500_wheel_back_right"
+      wheel_prefix="wheel_back_right"
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
