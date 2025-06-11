@@ -165,7 +165,7 @@ def execution_stage(context: LaunchContext,
         arm_typ == "ur10e"):
 
         initial_joint_controller = "scaled_joint_trajectory_controller"
-        if use_mock:
+        if use_mock.lower() == 'true':
             initial_joint_controller = "joint_trajectory_controller"
         ur_arm = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
