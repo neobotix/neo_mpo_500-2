@@ -29,7 +29,8 @@ def execution_stage(context: LaunchContext,
                     gripper_type,
                     mock_arm,
                     robot_ip,
-                    controllers_yaml):
+                    controllers_yaml,
+                    legacy):
     
     neo_mpo_500 = get_package_share_directory('neo_mpo_500-2')
 
@@ -38,6 +39,7 @@ def execution_stage(context: LaunchContext,
     arm_typ = str(arm_type.perform(context))
     gripper_typ = str(gripper_type.perform(context))
     use_mock = str(mock_arm.perform(context))
+    use_legacy = str(legacy.perform(context))
 
     launch_actions = []
 
@@ -45,6 +47,13 @@ def execution_stage(context: LaunchContext,
     if (robot_namespace.perform(context) != "/"):
         rp_ns = robot_namespace.perform(context) + "/"
 
+    if (use_legacy.lower() == "true" and scanner_typ == "sick_nanoscan3"):
+        print("Invalid choice, Legacy mode only supports sick_s300 or sick_microscan3")
+        print("Exiting")
+        return
+
+    if (use_legacy.lower() == "false"):
+        scanner_typ = "sick_nanoscan3"
 
     # Setting up the URDF
     urdf = os.path.join(neo_mpo_500,
@@ -60,6 +69,7 @@ def execution_stage(context: LaunchContext,
         " ", 'use_mock_sensor_commands:=', use_mock,
         " ", 'use_imu:=', imu_enabl,
         " ", 'scanner_type:=', scanner_typ,
+        " ", 'use_legacy:='. use_legacy
     ]
 
     if arm_typ != "":
@@ -126,19 +136,62 @@ def execution_stage(context: LaunchContext,
     launch_actions.append(teleop)
 
     # 4. Laser
-    scanner_model = scanner_typ.split('_')[1] if '_' in scanner_typ else scanner_typ
-    scanner_vendor = scanner_typ.split('_')[0] if '_' in scanner_typ else scanner_typ
-    laser = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(neo_mpo_500, f'configs/lidar/{scanner_vendor}/{scanner_model}', f'{scanner_typ}.launch.py')
-            ),
-            launch_arguments={
-                'namespace': robot_namespace
-            }.items(),
-            condition=UnlessCondition(mock_arm)
-        )
+    if (scanner_typ != "sick_nanoscan3"):
+        scanner_model = scanner_typ.split('_')[1] if '_' in scanner_typ else scanner_typ
+        scanner_vendor = scanner_typ.split('_')[0] if '_' in scanner_typ else scanner_typ
+        laser = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(neo_mpo_500, f'configs/lidar/{scanner_vendor}/{scanner_model}', f'{scanner_typ}.launch.py')
+                ),
+                launch_arguments={
+                    'namespace': robot_namespace
+                }.items(),
+                condition=UnlessCondition(mock_arm)
+            )
 
-    launch_actions.append(laser)
+        launch_actions.append(laser)
+    else:
+        scan1 = Node(
+                package="sick_safetyscanners2",
+                executable="sick_safetyscanners2_node",
+                name="lidar_1_node",
+                output="screen",
+                emulate_tty=True,
+                parameters=[os.path.join(neo_mpo_500, 
+                                'configs/sick_lidar', 
+                                'nanoscan_1.yaml')],
+                condition=UnlessCondition(mock_arm),
+                remappings=[
+                    ('/scan', '/lidar_1/scan_filtered'),
+                    ('/extended_scan', '/lidar_1/extended_scan'),
+                    ('/output_paths', '/lidar_1/output_paths'),
+                    ('/raw_data', '/lidar_1/raw_data'),
+                    ('/field_data', '/lidar_1/field_data')
+                ]
+            )
+
+        launch_actions.append(scan1)
+
+        scan2 = Node(
+                package="sick_safetyscanners2",
+                executable="sick_safetyscanners2_node",
+                name="lidar_2_node",
+                output="screen",
+                emulate_tty=True,
+                parameters=[os.path.join(neo_mpo_500, 
+                                'configs/sick_lidar', 
+                                'nanoscan_2.yaml')],
+                condition=UnlessCondition(mock_arm),
+                remappings=[
+                    ('/scan', '/lidar_2/scan_filtered'),
+                    ('/extended_scan', '/lidar_2/extended_scan'),
+                    ('/output_paths', '/lidar_2/output_paths'),
+                    ('/raw_data', '/lidar_2/raw_data'),
+                    ('/field_data', '/lidar_2/field_data')
+                ]
+            )
+
+        launch_actions.append(scan2)
 
     # 5. IMU
     if imu_enabl.lower == 'true':

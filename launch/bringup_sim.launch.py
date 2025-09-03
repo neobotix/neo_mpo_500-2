@@ -20,12 +20,23 @@ def execution_stage(context: LaunchContext,
                     arm_type,
                     imu_enable,
                     scanner_type,
-                    gripper_type):    
+                    gripper_type,
+                    legacy):    
 
     launch_actions = []
 
     robot_type = "mpo_500"
+    scanner_typ = str(scanner_type.perform(context))
     world_name = str(world.perform(context))
+    use_legacy = str(legacy.perform(context))
+
+    if (use_legacy.lower() == "true" and scanner_typ == "sick_nanoscan3"):
+        print("Invalid choice, Legacy mode only supports sick_s300 or sick_microscan3")
+        print("Exiting")
+        return
+
+    if (use_legacy.lower() == "false"):
+        scanner_typ = "sick_nanoscan3"
 
     # Launch bringup_sim file from mp_bringup package
     bringup_sim_launch_cmd = IncludeLaunchDescription(
@@ -38,8 +49,9 @@ def execution_stage(context: LaunchContext,
             'world': world_name,
             'arm_type': arm_type,
             'imu_enable': imu_enable,
-            'scanner_type': scanner_type,
-            'gripper_type': gripper_type
+            'scanner_type': scanner_typ,
+            'gripper_type': gripper_type,
+            'use_legacy': legacy
         }.items(),
     )
 
@@ -74,7 +86,7 @@ def generate_launch_description():
 
     declare_scanner_type_cmd = DeclareLaunchArgument(
             'scanner_type', default_value='sick_s300',
-            choices=['', 'sick_s300', 'sick_microscan3'],
+            choices=['', 'sick_s300', 'sick_microscan3', 'sick_nanoscan3'],
             description='Type of laser scanner to use\n\t'
         )
 
@@ -82,6 +94,11 @@ def generate_launch_description():
             'gripper_type', default_value='',
             choices=['', '2f_140', '2f_85'], # epick gripper not supported in simulation yet
             description='Gripper Types\n\t'
+        )
+
+    declare_use_legacy_cmd = DeclareLaunchArgument(
+            'use_legacy', default_value='False',
+            description='Set legacy to True if you are using the old model'
         )
 
     opq_function = OpaqueFunction(
@@ -93,6 +110,7 @@ def generate_launch_description():
             LaunchConfiguration('imu_enable'),
             LaunchConfiguration('scanner_type'),
             LaunchConfiguration('gripper_type'),
+            LaunchConfiguration('use_legacy')
         ])
 
     return LaunchDescription([
@@ -102,5 +120,6 @@ def generate_launch_description():
         declare_imu_cmd,
         declare_scanner_type_cmd,
         declare_gripper_type_cmd,
+        declare_use_legacy_cmd,
         opq_function
     ])
