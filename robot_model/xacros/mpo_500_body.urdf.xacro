@@ -28,13 +28,13 @@ Contributor: Adarsh Karan K P
         <visual>
           <origin rpy="-1.571 0 1.571" xyz="0 0 0"/>
           <geometry>
-            <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO-500-BODY-${model}.dae" scale="0.001 0.001 0.001"/>
           </geometry>
         </visual>
         <collision>
           <origin rpy="-1.571 0 1.571" xyz="0 0 0"/>
           <geometry>
-            <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO-500-BODY.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://neo_mpo_500-2/robot_model/meshes/MPO-500-BODY-${model}.dae" scale="0.001 0.001 0.001"/>
           </geometry>
         </collision>
     </link>
