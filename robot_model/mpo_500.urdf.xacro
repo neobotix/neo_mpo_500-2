@@ -20,6 +20,7 @@ Contributor: Adarsh Karan K P
   <xacro:arg name="simulation_controllers" default=""/>
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="mock_sensor_commands" default="false"/>
+  <xacro:arg name="use_legacy" default="false"/>
 
   <xacro:arg name="include_arm_ros2_control" default="false"/>
   <xacro:arg name="include_gripper_ros2_control" default="false"/>
@@ -33,6 +34,7 @@ Contributor: Adarsh Karan K P
   <xacro:property name="gripper" value="$(arg gripper_type)"/>
   <xacro:property name="ur_dc" value="$(arg use_ur_dc)"/>
   <xacro:property name="use_mock" value="$(arg use_mock_hardware)"/>
+  <xacro:property name="legacy" value="$(arg use_legacy)"/>
 
   <!-- When there is an arm mounted, the joints of the wheels needs 
   to be of fixed type. The reason being, both the drive modules and 
@@ -41,20 +43,35 @@ Contributor: Adarsh Karan K P
   to ROS 2 control. -->
   <xacro:property name="meca_joint_type" value="revolute"/>
 
+  <!-- Need to swap the model according to the legacy use -->
+  <xacro:property name="model" value="NEW"/>
+
+  <!-- use legacy -->
+  <xacro:if value="${legacy == True}">
+    <xacro:property name="model" value="LEGACY"/>
+  </xacro:if>
+
   <!-- Include the robot body -->
   <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/mpo_500_body.urdf.xacro"/>
   <xacro:mpo_500_body/>
 
   <!-- Laser Scanners -->
-  <xacro:if value="${scanner == 'sick_s300'}">
-    <!--https://neobotix-docs.de/hardware/en/platforms/mpo-500/mechanical.html-->
-    <xacro:property name="scanner_height" value="0.372"/>
-    <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_s300_macro.xacro"/>
+  <xacro:if value="${legacy == True}">
+    <xacro:if value="${scanner == 'sick_s300'}">
+      <!--https://neobotix-docs.de/hardware/en/platforms/mpo-500/mechanical.html-->
+      <xacro:property name="scanner_height" value="0.372"/>
+      <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_s300_macro.xacro"/>
+    </xacro:if>
+
+    <xacro:if value="${scanner == 'sick_microscan3'}">
+      <xacro:property name="scanner_height" value="0.372"/>
+      <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_microscan3_macro.xacro"/>
+    </xacro:if> 
   </xacro:if>
 
-  <xacro:if value="${scanner == 'sick_microscan3'}">
-    <xacro:property name="scanner_height" value="0.372"/>
-    <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_microscan3_macro.xacro"/>
+  <xacro:if value="${scanner == 'sick_nanoscan3'}">
+    <xacro:property name="scanner_height" value="0.386"/>
+    <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_nanoscan.xacro"/>
   </xacro:if>
 
   <xacro:sick_laser_scanner 
