@@ -1,0 +1,188 @@
+{
+	"input_kinematics_state": "kinematics.state",
+	"input_flexi_soft": "flexi_soft.data.fetch",
+	"input_io_board": "platform.io_board_data",
+
+	"output_system_state": "platform.system_state",
+	"output_safety_state": "platform.safety_state",
+	"output_power_state": "platform.power_state",
+	"output_relay_board": "platform.relay_board_data",
+	"output_us_board": "platform.us_board_data",
+	"output_battery_state": "platform.battery_state",
+	"output_emergency_state": "platform.emergency_state",
+	"output_flexi_soft": "flexi_soft.data.send",
+
+	"flexi_soft_write_address": {
+		"block_number": 66
+	},
+	"power_system": "POWER_48V",
+
+	"key_switch_off_gpio": 44,
+	"radio_emergency_gpio": 110,
+	"charge_relay_gpio": 26,
+	"release_structure_gpio": 47,
+	"relay_gpios": [
+		20,
+		7,
+		27,
+		65
+	],
+	"digin_gpios": [
+		111,
+		112,
+		115,
+		113
+	],
+	"keypad_gpios": [
+		117,
+		49,
+		5,
+		4
+	],
+	"led_pwms": {
+		"RED": [7, 0],
+		"GREEN": [5, 1],
+		"BLUE": [7, 1],
+		"WHITE": [5, 0]
+	},
+	"battery_voltage_ain": 0,
+	"charge_current_ain": 2,
+	"temperature_ain": 4,
+
+	"led_off": {
+		"stops": [
+			[0, {"RED": 0, "GREEN": 0, "BLUE": 0, "WHITE": 0}]
+		]
+	},
+	"led_startup": {
+		"type": "RECIPROCAL_GRADIENT",
+		"stops": [
+			[0, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[0.14285714285714285, {"RED": 1, "GREEN": 0, "BLUE": 0}],
+			[0.2857142857142857, {"RED": 1, "GREEN": 1, "BLUE": 0}],
+			[0.42857142857142855, {"RED": 0, "GREEN": 1, "BLUE": 0}],
+			[0.5714285714285714, {"RED": 0, "GREEN": 1, "BLUE": 1}],
+			[0.7142857142857143, {"RED": 0, "GREEN": 0, "BLUE": 1}],
+			[0.8571428571428571, {"RED": 0.5, "GREEN": 0, "BLUE": 1}],
+			[1, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		]
+	},
+	"led_shutdown": {
+		"type": "RECIPROCAL_GRADIENT",
+		"stops": [
+			[0, {"WHITE": 0.6, "RED": 0, "GREEN": 0, "BLUE": 0}],
+			[1, {"WHITE": 0.002, "RED": 0, "GREEN": 0, "BLUE": 0}]
+		]
+	},
+	"led_key_switch_off": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"WHITE": 0.4}],
+			[0.1, {"WHITE": 0.1}]
+		],
+		"repeat": true,
+		"clear": {"WHITE": 0}
+	},
+	"led_critical_error": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 1, "GREEN": 0, "BLUE": 0}],
+			[250000, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[500000, {"RED": 1, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_uncritical_error": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 1, "GREEN": 0, "BLUE": 0}],
+			[500000, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[1000000, {"RED": 1, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_em_stop": {
+		"stops": [
+			[0, {"RED": 1, "GREEN": 0, "BLUE": 0}]
+		]
+	},
+	"led_scanner_stop": {
+		"stops": [
+			[0, {"RED": 1, "GREEN": 1, "BLUE": 0}]
+		]
+	},
+	"led_radio_em_stop": {
+		"stops": [
+			[0, {"RED": 1, "GREEN": 0, "BLUE": 0}]
+		]
+	},
+	"led_em_reset_required": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 0, "GREEN": 0, "BLUE": 1}],
+			[500000, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_em_confirmed": {
+		"type": "RECIPROCAL_GRADIENT",
+		"stops": [
+			[0, {"RED": 1, "GREEN": 1, "BLUE": 0}],
+			[1, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		]
+	},
+	"led_charging_init": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 0, "GREEN": 1, "BLUE": 1}],
+			[500000, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_charging": {
+		"type": "RECIPROCAL_GRADIENT",
+		"stops": [
+			[0, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[800000, {"RED": 0, "GREEN": 1, "BLUE": 1}],
+			[1600000, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_charging_finished": {
+		"stops": [
+			[0, {"RED": 0, "GREEN": 1, "BLUE": 1}]
+		]
+	},
+	"led_driving": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 1, "GREEN": 1, "BLUE": 0}],
+			[500000, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[1000000, {"RED": 1, "GREEN": 1, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_structure_released": {
+		"type": "TOGGLE",
+		"stops": [
+			[0, {"RED": 1, "GREEN": 1, "BLUE": 0}],
+			[250000, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[500000, {"RED": 1, "GREEN": 1, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_standby": {
+		"type": "RECIPROCAL_GRADIENT",
+		"stops": [
+			[0, {"RED": 0, "GREEN": 0, "BLUE": 0}],
+			[5000000, {"RED": 0, "GREEN": 1, "BLUE": 0}],
+			[10000000, {"RED": 0, "GREEN": 0, "BLUE": 0}]
+		],
+		"repeat": true
+	},
+	"led_idle": {
+		"stops": [
+			[0, {"RED": 0, "GREEN": 1, "BLUE": 0}]
+		]
+	}
+}

@@ -1,0 +1,53 @@
+{
+	"motor_map": {
+		"FRONT_LEFT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 2
+				},
+				"gear_ratio": 25,
+				"rot_sign": 1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"FRONT_RIGHT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 3
+				},
+				"gear_ratio": 25,
+				"rot_sign": -1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"BACK_LEFT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 4
+				},
+				"gear_ratio": 25,
+				"rot_sign": 1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"BACK_RIGHT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 5
+				},
+				"gear_ratio": 25,
+				"rot_sign": -1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		}
+	},
+	"kinematic_type": "MECANUM"
+}

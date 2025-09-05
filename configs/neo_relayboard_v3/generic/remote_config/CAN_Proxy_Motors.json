@@ -1,0 +1,10 @@
+{
+	"input": "kinematics.drive_can.send",
+	"output": "kinematics.drive_can.receive",
+	"output_error": "kinematics.drive_can.errors",
+	"socket_options": {
+		"receive_error_frames": true
+	},
+	"device": "can1",
+	"is_big_endian": false
+}

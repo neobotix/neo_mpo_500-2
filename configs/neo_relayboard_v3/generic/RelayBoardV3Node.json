@@ -1,0 +1,73 @@
+{
+	"topics_board_to_ros": [
+		["platform.emergency_state", "emergency_stop_state"],
+		["platform.battery_state", "battery_state"],
+		["kinematics.drive_state", "drive/joint_states"],
+		["platform.io_board_data", "ioboard/data"],
+		["platform.us_board_data", "usboard/measurements"],
+		["platform.relay_board_data", "relayboard_v3/state"],
+		["platform.safety_state", "safety_state"]
+	],
+
+	"topics_ros_to_board": {
+		"trajectory_msgs/JointTrajectory": {
+			"drive/joint_trajectory": "kinematics.drive_cmd"
+		},
+		"neo_msgs2/KinematicsState":{
+			"/kinematics_state": "kinematics.state"
+		}
+	},
+	"topics_from_board": [
+        "vnx.log_out",
+		"platform.incidents",
+		"platform.system_state",
+		"platform.power_state"
+	],
+	"topics_to_ros": {
+		"us_sensor_0": "/usboard/sensor1",
+		"us_sensor_1": "/usboard/sensor2",
+		"us_sensor_2": "/usboard/sensor3",
+		"us_sensor_3": "/usboard/sensor4",
+		"us_sensor_4": "/usboard/sensor5",
+		"us_sensor_5": "/usboard/sensor6",
+		"us_sensor_6": "/usboard/sensor7",
+		"us_sensor_7": "/usboard/sensor8",
+		"us_sensor_8": "/usboard/sensor9",
+		"us_sensor_9": "/usboard/sensor10",
+		"us_sensor_10": "/usboard/sensor11",
+		"us_sensor_11": "/usboard/sensor12",
+		"us_sensor_12": "/usboard/sensor13",
+		"us_sensor_13": "/usboard/sensor14",
+		"us_sensor_14": "/usboard/sensor15",
+		"us_sensor_15": "/usboard/sensor16"
+	},
+
+	"kinematic_type": "MECANUM",
+	"motor_config": [
+		{
+			"enc_ticks_per_rev": 10000,
+			"gear_ratio": 25,
+			"rot_sign": 1,
+			"modulo": 1000000
+		},
+		{
+			"enc_ticks_per_rev": 10000,
+			"gear_ratio": 25,
+			"rot_sign": -1,
+			"modulo": 1000000
+		},
+		{
+			"enc_ticks_per_rev": 10000,
+			"gear_ratio": 25,
+			"rot_sign": 1,
+			"modulo": 1000000
+		},
+		{
+			"enc_ticks_per_rev": 10000,
+			"gear_ratio": 25,
+			"rot_sign": -1,
+			"modulo": 1000000
+		}
+	]
+}
+
