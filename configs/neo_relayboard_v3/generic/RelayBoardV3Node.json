@@ -43,31 +43,5 @@
 	},
 
 	"kinematic_type": "MECANUM",
-	"motor_config": [
-		{
-			"enc_ticks_per_rev": 10000,
-			"gear_ratio": 25,
-			"rot_sign": 1,
-			"modulo": 1000000
-		},
-		{
-			"enc_ticks_per_rev": 10000,
-			"gear_ratio": 25,
-			"rot_sign": -1,
-			"modulo": 1000000
-		},
-		{
-			"enc_ticks_per_rev": 10000,
-			"gear_ratio": 25,
-			"rot_sign": 1,
-			"modulo": 1000000
-		},
-		{
-			"enc_ticks_per_rev": 10000,
-			"gear_ratio": 25,
-			"rot_sign": -1,
-			"modulo": 1000000
-		}
-	]
 }
 
