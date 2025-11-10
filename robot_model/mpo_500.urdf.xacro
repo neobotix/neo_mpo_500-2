@@ -7,7 +7,6 @@ Contributor: Adarsh Karan K P
 <!-- This is the main URDF file for mpo_700-->
 
   <!-- Xacro Arguments-->
-  <xacro:arg name="use_gz" default="false"/>
   <xacro:arg name="use_imu" default="false"/>
   <xacro:arg name="use_d435" default="false"/>
   <xacro:arg name="scanner_type" default="sick_s300"/>
@@ -27,7 +26,6 @@ Contributor: Adarsh Karan K P
 
   <!-- Xacro Properties -->
   <xacro:property name="arm" value="$(arg arm_type)"/>
-  <xacro:property name="gz" value="$(arg use_gz)"/>
   <xacro:property name="imu" value="$(arg use_imu)"/>
   <xacro:property name="d435" value="$(arg use_d435)"/>
   <xacro:property name="scanner" value="$(arg scanner_type)"/>
@@ -42,11 +40,6 @@ Contributor: Adarsh Karan K P
   the visualization of the drives. Issue will be fixed, when we switch
   to ROS 2 control. -->
   <xacro:property name="meca_joint_type" value="revolute"/>
-
-  <!-- Additionally for simulation, the joint type of the wheels needs to be fixed. -->
-  <xacro:if value="${gz == True or arm != ''}">
-    <xacro:property name="meca_joint_type" value="fixed"/>
-  </xacro:if>
 
   <!-- Include the robot body -->
   <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/mpo_500_body.urdf.xacro"/>
@@ -149,7 +142,6 @@ Contributor: Adarsh Karan K P
           parent="neo_gripper_mount_link"
           use_mock_hardware="${use_mock}"
           mock_sensor_commands="${use_mock}"
-          sim_gazebo="${gz}"
           include_ros2_control="$(arg include_gripper_ros2_control)"
           >
           <origin xyz="0 0 0" rpy="0 0 -${pi / 2}"/>
@@ -168,11 +160,5 @@ Contributor: Adarsh Karan K P
     </xacro:unless>
 
   </xacro:unless>
-
-  <!-- Simulation -->
-  <xacro:if value="${gz == True}">
-    <xacro:include filename="$(find mp_components)/urdf/gazebo/mpo_500/mpo_500_gazebo.urdf.xacro" />
-    <xacro:mpo_500_gazebo />
-  </xacro:if>
 
 </robot>
