@@ -8,8 +8,8 @@
     channel: 0
     channel_enabled: True
     skip: 1
-    angle_start: -1.48
-    angle_end: 1.48
+    angle_start: -2.4
+    angle_end: 2.4
     time_offset: -0.015
     general_system_state: True
     derived_settings: True
