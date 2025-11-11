@@ -309,8 +309,19 @@ def execution_stage(context: LaunchContext,
             condition=UnlessCondition(mock_arm)
             )
 
+    # Relay drive/joint_states topic to joint_states
+    relay_topic_joint_states = Node(
+        package='topic_tools',
+        executable='relay',
+        name='relay_joint_states',
+        output='screen',
+        parameters=[{'input_topic': "drive/joint_states",'output_topic': "joint_states"}],
+        condition=UnlessCondition(mock_arm)
+    )
+    
     launch_actions.append(relay_topic_lidar1)
     launch_actions.append(relay_topic_lidar2)
+    launch_actions.append(relay_topic_joint_states)
 
     return launch_actions
 
