@@ -103,7 +103,7 @@ def generate_launch_description():
 
     declare_scanner_type_cmd = DeclareLaunchArgument(
             'scanner_type', default_value='sick_s300',
-            choices=['sick_s300', 'sick_microscan3'],
+            choices=['sick_s300', 'sick_microscan3', 'sick_nanoscan3'],
             description='Type of laser scanner to use\n\t'
         )
 
