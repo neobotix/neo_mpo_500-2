@@ -66,18 +66,18 @@ Contributor: Adarsh Karan K P
   <xacro:if value="${legacy == True}">
     <xacro:if value="${scanner == 'sick_s300'}">
       <!--https://neobotix-docs.de/hardware/en/platforms/mpo-500/mechanical.html-->
-      <xacro:property name="scanner_height" value="0.372"/>
+      <xacro:property name="scanner_x_value" value="0.442"/>
       <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_s300_macro.xacro"/>
     </xacro:if>
 
     <xacro:if value="${scanner == 'sick_microscan3'}">
-      <xacro:property name="scanner_height" value="0.372"/>
+      <xacro:property name="scanner_x_value" value="0.442"/>
       <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_microscan3_macro.xacro"/>
     </xacro:if> 
   </xacro:if>
 
   <xacro:if value="${scanner == 'sick_nanoscan3'}">
-    <xacro:property name="scanner_height" value="0.386"/>
+    <xacro:property name="scanner_x_value" value="0.454"/>
     <xacro:include filename="$(find neo_mpo_500-2)/robot_model/xacros/sick_nanoscan.xacro"/>
   </xacro:if>
 
@@ -85,14 +85,14 @@ Contributor: Adarsh Karan K P
     name="lidar_1" 
     parent="base_link"
     >
-    <origin rpy="0 0 0" xyz="0.442 0 ${scanner_height}"/>
+    <origin rpy="0 0 0" xyz="${scanner_x_value} 0 0.372"/>
   </xacro:sick_laser_scanner>
 
   <xacro:sick_laser_scanner
     name="lidar_2" 
     parent="base_link"
     >
-    <origin rpy="0 0 3.14" xyz="-0.442 0 ${scanner_height}"/>
+    <origin rpy="0 0 3.14" xyz="-${scanner_x_value} 0 0.372"/>
   </xacro:sick_laser_scanner>
 
   <!-- Using IMU -->
