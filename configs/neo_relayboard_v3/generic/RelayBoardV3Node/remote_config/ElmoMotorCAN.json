@@ -49,5 +49,21 @@
 			}
 		}
 	},
-	"kinematic_type": "MECANUM"
+	"kinematic_type": "MECANUM",
+	"input_system_state": "platform.system_state",
+	"can_proxy_server": "CAN_Proxy_Motors",
+	"canopen_node": {
+		"id": 1
+	},
+	"interval_ms": 10,
+	"status_divider": 10,
+	"heartbeat_divider": 5,
+	"record_divider": 2,
+	"watchdog_timeout": 10,
+	"motor_delay_ms": 0,
+	"motor_timeout_ms": 500,
+	"cmd_timeout_ms": 500,
+	"motor_group_id": 30,
+	"home_vel": -1,
+	"auto_home": true
 }
