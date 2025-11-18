@@ -375,7 +375,7 @@ def generate_launch_description():
         )
 
     declare_use_legacy_cmd = DeclareLaunchArgument(
-            'use_legacy', default_value='True',
+            'use_legacy', default_value='False',
             description='Set legacy to True if you are using the old model'
         )
 
