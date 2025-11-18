@@ -22,11 +22,12 @@ def execution_stage(
         context: LaunchContext,
         use_sim_time,
         autostart, namespace, use_multi_robots,
-        head_robot, use_amcl, map_dir, param_dir, use_rviz):
+        head_robot, use_amcl, map_dir, param_dir, use_rviz, legacy):
     
     launch_actions = []
 
     params = str(param_dir.perform(context))
+    use_legacy = str(legacy.perform(context))
 
     # If the parameter file is not provided, use the default one based on the robot type
     if not params:
@@ -34,6 +35,12 @@ def execution_stage(
                 get_package_share_directory('neo_mpo_500-2'),
                 'configs', 'navigation',
                 'navigation.yaml')
+
+        if use_legacy.lower() == "true":
+            params = os.path.join(
+                    get_package_share_directory('neo_mpo_500-2'),
+                    'configs', 'navigation',
+                    'navigation_legacy.yaml')
         
     nav2_launch_file_dir = os.path.join(get_package_share_directory('neo_nav2_bringup'), 'launch')
 
@@ -113,6 +120,7 @@ def generate_launch_description():
     map_dir = LaunchConfiguration('map')
     param_dir = LaunchConfiguration('nav2_params_file')
     use_rviz = LaunchConfiguration('use_rviz')
+    use_legacy = LaunchConfiguration('use_legacy')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
             'use_sim_time', default_value='false',
@@ -164,6 +172,11 @@ def generate_launch_description():
             'use_rviz', default_value='True',
             description='Launch RViz for visualization'
         )
+
+    declare_use_legacy_cmd = DeclareLaunchArgument(
+            'use_legacy', default_value='False',
+            description='Sets the footprint to legacy mode'
+        )
     
     # Adding all the necessary launch description actions
     launch_desc.add_action(declare_use_sim_time_cmd)
@@ -175,9 +188,11 @@ def generate_launch_description():
     launch_desc.add_action(declare_map_cmd)
     launch_desc.add_action(declare_nav2_param_file_cmd)
     launch_desc.add_action(declare_use_rviz_cmd)
+    launch_desc.add_action(declare_use_legacy_cmd)
 
     context_arguments = [use_sim_time, autostart, namespace,
-                         use_multi_robots, head_robot, use_amcl, map_dir, param_dir, use_rviz]
+                         use_multi_robots, head_robot, use_amcl,
+                         map_dir, param_dir, use_rviz, use_legacy]
 
     opq_function = OpaqueFunction(function=execution_stage, args=context_arguments)
 
