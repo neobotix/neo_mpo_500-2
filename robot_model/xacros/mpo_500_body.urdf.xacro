@@ -52,7 +52,7 @@ Contributor: Adarsh Karan K P
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
-      <origin rpy="0 0 0" xyz="0.25 0.28 0.13"/>
+      <origin rpy="0 0 0" xyz="0.25 0.274 0.127"/>
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel 
@@ -60,7 +60,7 @@ Contributor: Adarsh Karan K P
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
-      <origin rpy="0 0 3.14" xyz="0.25 -0.28 0.13"/>
+      <origin rpy="0 0 3.14" xyz="0.25 -0.274 0.127"/>
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel 
@@ -68,7 +68,7 @@ Contributor: Adarsh Karan K P
       parent_link="base_footprint"
       wheel_joint_type="${meca_joint_type}"
       >
-      <origin rpy="0 0 0" xyz="-0.25 0.28 0.13"/>
+      <origin rpy="0 0 0" xyz="-0.25 0.274 0.127"/>
     </xacro:mpo_500_omni_wheel>
 
     <xacro:mpo_500_omni_wheel
@@ -76,7 +76,7 @@ Contributor: Adarsh Karan K P
       parent_link="base_footprint" 
       wheel_joint_type="${meca_joint_type}"
       >
-      <origin rpy="0 0 3.14" xyz="-0.25 -0.28 0.13"/>
+      <origin rpy="0 0 3.14" xyz="-0.25 -0.274 0.127"/>
     </xacro:mpo_500_omni_wheel>
     
   </xacro:macro>
