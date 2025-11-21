@@ -1,0 +1,69 @@
+{
+	"motor_map": {
+		"FRONT_LEFT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 2
+				},
+				"gear_ratio": 25,
+				"rot_sign": 1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"FRONT_RIGHT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 3
+				},
+				"gear_ratio": 25,
+				"rot_sign": -1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"BACK_LEFT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 4
+				},
+				"gear_ratio": 25,
+				"rot_sign": 1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		},
+		"BACK_RIGHT": {
+			"DRIVE": {
+				"canopen_node": {
+					"id": 5
+				},
+				"gear_ratio": 25,
+				"rot_sign": -1,
+				"enc_ticks_per_rev": 10000,
+				"torque_constant": 0.116,
+				"mode": "VELOCITY_CONTROL"
+			}
+		}
+	},
+	"kinematic_type": "MECANUM",
+	"input_system_state": "platform.system_state",
+	"can_proxy_server": "CAN_Proxy_Motors",
+	"canopen_node": {
+		"id": 1
+	},
+	"interval_ms": 10,
+	"status_divider": 10,
+	"heartbeat_divider": 5,
+	"record_divider": 2,
+	"watchdog_timeout": 10,
+	"motor_delay_ms": 0,
+	"motor_timeout_ms": 500,
+	"cmd_timeout_ms": 500,
+	"motor_group_id": 30,
+	"home_vel": -1,
+	"auto_home": true
+}

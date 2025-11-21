@@ -1,0 +1,8 @@
+{
+	"can_id": 1104,
+	"request_interval_ms": 50,
+	"input_can": "devices.can.receive",
+	"output_can": "devices.can.send",
+	"output_data": "platform.io_board_data"
+}
+

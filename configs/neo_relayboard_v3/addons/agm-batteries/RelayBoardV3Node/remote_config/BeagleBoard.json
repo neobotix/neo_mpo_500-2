@@ -1,0 +1,21 @@
+{
+	"charge_profile": {
+		"current_offset": 1.4,
+		"charge_phases": [
+			{
+				"cc_cv": {
+					"current": 4.7,
+					"voltage": 56.4
+				},
+				"target_min_current": 0.4
+			},
+			{
+				"is_conservation": true,
+				"cc_cv": {
+					"current": 0.4,
+					"voltage": 55.2
+				}
+			}
+		]
+	}
+}

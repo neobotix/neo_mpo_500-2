@@ -1,0 +1,9 @@
+/**:
+  ros__parameters:
+    board_node: "192.168.1.80:5554"
+    pilot_config: "/home/neobotix/ros2_workspace/src/neo_mpo_500-2/configs/neo_relayboard_v3/generic"
+    agm_batteries_config: "/home/neobotix/ros2_workspace/src/neo_mpo_500-2/configs/neo_relayboard_v3/addons/agm-batteries"
+    lfp_batteries: False # Set to True if you have LFP Batteries
+    lfp_batteries_config: "/home/neobotix/ros2_workspace/src/neo_mpo_500-2/configs/neo_relayboard_v3/addons/lfp-batteries"
+    use_multipowr: False #Set to True if you have wallbox
+    multipowr_config: "/home/neobotix/ros2_workspace/src/neo_mpo_500-2/configs/neo_relayboard_v3/addons/smart-charger"
