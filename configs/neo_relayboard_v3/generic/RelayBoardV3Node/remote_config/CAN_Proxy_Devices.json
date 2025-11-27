@@ -1,0 +1,10 @@
+{
+	"input": "devices.can.send",
+	"output": "devices.can.receive",
+	"output_error": "devices.can.errors",
+	"socket_options": {
+		"receive_error_frames": true
+	},
+	"device": "can0",
+	"is_big_endian": false
+}

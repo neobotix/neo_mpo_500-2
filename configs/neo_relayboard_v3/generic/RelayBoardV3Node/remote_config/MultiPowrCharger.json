@@ -1,0 +1,6 @@
+{
+	"input_can": "devices.can.receive",
+	"charging_current": 4.7,
+	"charging_voltage": 56.4,
+	"min_alignment": 2
+}
